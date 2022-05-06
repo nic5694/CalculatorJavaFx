@@ -18,7 +18,7 @@ public class PostfixEvaluator {
                     Operand op2 = operands.pop();
                     Operand op1 = operands.pop();
                     Operator operator = (Operator) expression.get(i);
-                    operands.push(operator.evaluate(op1, op2));
+                    operands.push(operator.evaluate(op1, op2));//flip op1 and op2
                 }
             }
             if (operands.size() != 1)

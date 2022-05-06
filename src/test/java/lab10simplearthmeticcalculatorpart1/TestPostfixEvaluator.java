@@ -67,5 +67,19 @@ public class TestPostfixEvaluator {
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
+    @Test
+    public void InfixExpression_CorrectExpression_EvaluateToANumber(){
+        InfixExpression evaluator = new InfixExpression();
+        evaluator.addToken(new Operand(3));
+        evaluator.addToken(new Multiplication());
+        evaluator.addToken(new Operand(2));
+        evaluator.addToken(new Addition());
+        evaluator.addToken(new Operand(5));
+        evaluator.addToken(new Addition());
+        evaluator.addToken(new Operand(6));
+        evaluator.addToken(new Multiplication());
+        evaluator.addToken(new Operand(4));
+        assertEquals(35, evaluator.evaluate());
+    }
 
 }
