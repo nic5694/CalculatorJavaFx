@@ -1,8 +1,6 @@
 package lab10simplearthmeticcalculatorpart1;
 
-import javafx.geometry.Pos;
 import lab10.lab10simplearthmeticcalculatorpart1.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 public class TestPostfixEvaluator {
@@ -67,6 +65,7 @@ public class TestPostfixEvaluator {
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
     @Test
     public void InfixExpression_CorrectExpression_EvaluateToANumber(){
         InfixExpression evaluator = new InfixExpression();
@@ -81,5 +80,12 @@ public class TestPostfixEvaluator {
         evaluator.addToken(new Operand(4));
         assertEquals(35, evaluator.evaluate());
     }
+
+    @Test
+    public void ArithmeticExpression_CorrectExpression_EvaluateToANumber(){
+        ArithmeticExpression expression = new ArithmeticExpression("12+6*2");
+        assertEquals(expression.evaluate(), 24);
+    }
+
 
 }

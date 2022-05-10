@@ -3,8 +3,6 @@ package lab10.lab10simplearthmeticcalculatorpart1;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,9 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import java.io.IOException;
-
 import org.kordamp.bootstrapfx.BootstrapFX;
+
+import java.util.Objects;
 
 
 public class Main extends Application {
@@ -28,14 +26,12 @@ public class Main extends Application {
         launch();
     }
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         stage.setTitle("Calculator");
-        stage.setMaxWidth(500);;
+        stage.setMaxWidth(500);
         stage.setMaxHeight(427);
         stage.setMinHeight(427);
         stage.setMinWidth(500);
-       // stage.setResizable(false);
-       // stage.centerOnScreen();
 
 
         HBox hBox = new HBox();
@@ -69,9 +65,9 @@ public class Main extends Application {
                 x++;
             }
         }
-        gridPane.add(createCalculatorButton2("+"),4,0);
+        gridPane.add(createCalculatorButton2("*"),4,0);
         gridPane.add(createCalculatorButton2("-"),4,1);
-        gridPane.add(createCalculatorButton2("*"),4,2);
+        gridPane.add(createCalculatorButton2("+"),4,2);
         gridPane.add(createCalculatorButton2("="),4,4);
         gridPane.add(createCalculatorButton2("/"),2,4);
         gridPane.add(createCalculatorButton2("c"),0,4);
@@ -83,7 +79,7 @@ public class Main extends Application {
         vBox.setMinWidth(300);
         Scene  scene = new Scene(hBox);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        String cssLink = getClass().getResource("/css/style.css").toExternalForm();
+        String cssLink = Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm();
         scene.getStylesheets().add(cssLink);
         stage.setScene(scene);
 
@@ -102,12 +98,7 @@ public class Main extends Application {
                 } else if (b1.getText().equalsIgnoreCase("=") && (label.getText().isEmpty())) {
                     return;
                 }else if(b1.getText().equalsIgnoreCase("=")&& !(label.getText().isEmpty())) {
-                    if (isExpressionCorrect(label.getText())) {
-                        listView.getItems().add(label.getText());
-                        clicked = true;
-                        styleLabel();
-
-                    }
+                    labelevaluator();
                 }else {
                     if (clicked) {
                         clicked = false;
@@ -131,11 +122,7 @@ public class Main extends Application {
                 label.setText("");
                 label.getStyleClass().clear();
             }else if(b1.getText().equalsIgnoreCase("=") && !( label.getText().isEmpty())){
-                if(isExpressionCorrect(label.getText())){
-                    listView.getItems().add(label.getText());
-                    clicked=true;
-                    styleLabel();
-                }
+                labelevaluator();
             }
             else if(b1.getText().equalsIgnoreCase("=") && label.getText().isEmpty()){
                 return;
@@ -153,11 +140,20 @@ public class Main extends Application {
         });
         return b1;
     }
-private boolean isExpressionCorrect(String expression){
-        if(expression.matches("^(\\d+[\\+\\-\\*\\/]{1})+\\d+$"))
-        return true;
-        else
-        return false;
+
+    private void labelevaluator() {
+        if(isExpressionCorrect(label.getText())){
+            ArithmeticExpression arithmeticExpression = new ArithmeticExpression(label.getText());
+            listView.getItems().add(label.getText());
+            label.setText(String.valueOf(arithmeticExpression.evaluate()));
+            clicked=true;
+            label.getStyleClass().clear();
+            label.getStyleClass().addAll("lbl","lbl-primary");
+        }
+    }
+
+    private boolean isExpressionCorrect(String expression){
+        return expression.matches("^(\\d+[+\\-*/])+\\d+$");
         }
         private void styleLabel(){
         if(isExpressionCorrect(label.getText())){
