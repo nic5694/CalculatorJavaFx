@@ -39,7 +39,7 @@ public class TestPostfixEvaluator {
             evaluator.evaluate();
         });
         String expectedMessage = "Operation is incomplete, theirs missing an operator!";
-        String actualMessage = "Operation is incomplete, theirs missing an operator!";
+        String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
     @Test
